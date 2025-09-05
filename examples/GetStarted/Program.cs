@@ -91,8 +91,8 @@ class Program
         var builder = WebApplication.CreateBuilder();
 
         Log.Logger = new LoggerConfiguration()
-            .MinimumLevel.Debug()
-            //.MinimumLevel.Verbose()
+            //.MinimumLevel.Debug()
+            .MinimumLevel.Verbose()
             .Enrich.FromLogContext()
             .WriteTo.Console()
             .CreateLogger();
@@ -176,8 +176,8 @@ class Program
         sipTransport.EnableTraceLogs();
 
         var userAgent = new SIPUserAgent(sipTransport, null);
-        var winAudio = new WindowsAudioEndPoint(new AudioEncoder());
-        winAudio.RestrictFormats(x => x.Codec == AudioCodecsEnum.PCMU);
+        var winAudio = new WindowsAudioEndPoint(new AudioEncoder(includeOpus: true));
+        //winAudio.RestrictFormats(x => x.Codec == AudioCodecsEnum.OPUS); // No joy as of 5 Sep 2025. PCM only.
         var voipMediaSession = new VoIPMediaSession(winAudio.ToMediaEndPoints());
         voipMediaSession.AcceptRtpFromAny = true;
 
